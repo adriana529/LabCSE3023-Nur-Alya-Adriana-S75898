@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>Form</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h2>Add a New Product</h2>
+        <form action="InsertServlet" method="POST">
+            <label>Name:</label><br>
+            <input type="text" name="name" required><br><br>
+
+            <label>Category:</label><br>
+            <input type="text" name="category" required><br><br>
+
+            <label>Price:</label><br>
+            <input type="number" step="0.01" name="price" required><br><br>
+
+            <label>Quantity:</label><br>
+            <input type="number" name="quantity" required><br><br>
+
+            <input type="submit" value="Save Product">
+        </form>
+        <br>
+        <a href="ViewServlet">View All Products</a>
+    </body>
+</html>
