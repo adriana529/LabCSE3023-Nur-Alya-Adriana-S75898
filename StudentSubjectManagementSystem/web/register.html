@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Register New Student</title>
+    </head>
+    <body>
+        <h2>Register New Student</h2>
+        
+        <form action="UserServlet" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="register">
+
+            <label>Matric No:</label><br>
+            <input type="text" name="matricNo" required>
+            <br><br>
+
+            <label>Full Name:</label><br>
+            <input type="text" name="fullName" required>
+            <br><br>
+
+            <label>Password:</label><br>
+            <input type="password" name="password" required>
+            <br><br>
+
+            <label>Profile Picture:</label><br>
+            <input type="file" name="profileImage" accept="image/*" required>
+            <br><br>
+
+            <input type="submit" value="Register Student">
+        </form>
+    </body>
+</html>
