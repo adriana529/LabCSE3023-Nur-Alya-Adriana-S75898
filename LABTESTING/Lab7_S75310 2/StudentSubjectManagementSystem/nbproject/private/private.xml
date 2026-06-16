@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/src/java/com/lab/dao/StudentDAO.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/src/java/com/lab/controller/UserServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/src/java/com/lab/controller/LoginServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/web/subject/registerSubject.jsp</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/web/index.html</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/src/java/com/lab/dao/SubjectDAO.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/src/java/com/lab/controller/SubjectServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/web/subject/updateSubject.jsp</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/web/register.html</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/src/java/com/lab/bean/SubjectBean.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/web/dashboard.jsp</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/web/login.html</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/src/java/com/lab/bean/StudentBean.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/SEM4/WEB/Lab7/StudentSubjectManagementSystem/web/subject/viewSubjects.jsp</file>
+        </group>
+    </open-files>
+</project-private>

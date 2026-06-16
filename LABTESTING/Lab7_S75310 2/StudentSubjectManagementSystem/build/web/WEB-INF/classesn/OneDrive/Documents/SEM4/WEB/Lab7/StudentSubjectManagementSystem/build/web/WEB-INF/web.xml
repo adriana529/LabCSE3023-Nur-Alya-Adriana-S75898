@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="4.0"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+
+    <!--
+        FIX: UserServlet is annotated with @WebServlet("/UserServlet") and @MultipartConfig
+        in the Java source. Declaring it AGAIN here with <servlet-mapping> or
+        <multipart-config> causes a Tomcat deployment conflict (duplicate servlet error).
+        UserServlet is therefore fully removed from web.xml — the annotation handles it.
+
+        SubjectServlet has NO @WebServlet annotation, so it must still be declared here.
+    -->
+
+    <servlet>
+        <servlet-name>SubjectServlet</servlet-name>
+        <servlet-class>com.lab.controller.SubjectServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SubjectServlet</servlet-name>
+        <url-pattern>/SubjectServlet</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <welcome-file-list>
+        <welcome-file>login.html</welcome-file>
+    </welcome-file-list>
+
+</web-app>

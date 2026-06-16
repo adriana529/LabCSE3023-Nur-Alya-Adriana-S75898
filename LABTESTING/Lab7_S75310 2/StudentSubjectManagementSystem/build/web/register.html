@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Register New Student</h2>
+    <form action="UserServlet" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="action" value="register">
+        Matric No: <input type="text" name="matricNo" required><br><br>
+        Full Name: <input type="text" name="fullname" required><br><br>
+        Password: <input type="password" name="password" required><br><br>
+        Profile Picture: <input type="file" name="profileImage" accept="image/*" required>
+        <br><br>
+        <input type="submit" value="Register">
+    </form>
+</body>
+</html>
+ 
