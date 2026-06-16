@@ -1,0 +1,253 @@
+// bean 
+package com.lab.bean;
+
+import java.io.Serializable; 
+
+public class StudentBean implements Serializable {
+    
+    // Sama dengan column dalam database
+    private int id; 
+    private String matricNo; 
+    private String name;  
+
+    public StudentBean() {}
+
+    public StudentBean(int id, String matricNo, String name) {
+        this.id = id;
+        this.matricNo = matricNo;
+        this.name = name;
+    }
+
+    // Getters & Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getMatricNo() { return matricNo; }
+    public void setMatricNo(String matricNo) { this.matricNo = matricNo; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+}
+
+
+//studentDAO
+package com.lab.dao;
+
+import com.lab.bean.StudentBean; 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentDAO {
+    private String url = "jdbc:mysql://localhost:3306/lab_test_db"; // Letak nama DB awak
+    private String user = "root";
+    private String pass = "";
+
+    protected Connection getConnection() {
+        Connection conn = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection(url, user, pass);
+        } catch (Exception e) { e.printStackTrace(); }
+        return conn;
+    }
+
+    // 1. CREATE
+    public void insertStudent(StudentBean student) throws SQLException {
+        String sql = "INSERT INTO students (matric_no, name) VALUES (?, ?)";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, student.getMatricNo());
+            ps.setString(2, student.getName());
+            ps.executeUpdate();
+        }
+    }
+
+    // 2. READ ALL
+    public List<StudentBean> selectAllStudents() throws SQLException {
+        List<StudentBean> list = new ArrayList<>();
+        String sql = "SELECT * FROM students";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(new StudentBean(rs.getInt("id"), rs.getString("matric_no"), rs.getString("name")));
+            }
+        }
+        return list;
+    }
+
+    // 3. READ ONE 
+    public StudentBean selectStudent(int id) throws SQLException {
+        StudentBean student = null;
+        String sql = "SELECT * FROM students WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                student = new StudentBean(id, rs.getString("matric_no"), rs.getString("name"));
+            }
+        }
+        return student;
+    }
+
+    // 4. UPDATE
+    public void updateStudent(StudentBean student) throws SQLException {
+        String sql = "UPDATE students SET matric_no = ?, name = ? WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, student.getMatricNo());
+            ps.setString(2, student.getName());
+            ps.setInt(3, student.getId());
+            ps.executeUpdate();
+        }
+    }
+
+    // 5. DELETE
+    public void deleteStudent(int id) throws SQLException {
+        String sql = "DELETE FROM students WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+}
+
+
+//servlet 
+package com.lab.controller;
+
+import com.lab.bean.StudentBean; 
+import com.lab.dao.StudentDAO;   
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
+@WebServlet("/StudentServlet")
+public class StudentServlet extends HttpServlet {
+    private StudentDAO dao; 
+
+    public void init() { dao = new StudentDAO(); } 
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if (action == null) action = "list";
+
+        try {
+            switch (action) {
+                case "new":
+                    request.getRequestDispatcher("studentForm.jsp").forward(request, response);
+                    break;
+                case "insert":
+                    String matricNo = request.getParameter("matricNo");
+                    String name = request.getParameter("name");
+                    dao.insertStudent(new StudentBean(0, matricNo, name));
+                    
+                    response.sendRedirect("StudentServlet?action=list");
+                    break;
+                case "edit":
+                    int editId = Integer.parseInt(request.getParameter("id"));
+                    request.setAttribute("studentData", dao.selectStudent(editId)); 
+                    request.getRequestDispatcher("studentForm.jsp").forward(request, response);
+                    break;
+                case "update":
+                    int upId = Integer.parseInt(request.getParameter("id"));
+                    String upMatric = request.getParameter("matricNo");
+                    String upName = request.getParameter("name");
+                    dao.updateStudent(new StudentBean(upId, upMatric, upName));
+                    
+                    response.sendRedirect("StudentServlet?action=list");
+                    break;
+                case "delete":
+                    int delId = Integer.parseInt(request.getParameter("id"));
+                    dao.deleteStudent(delId);
+                    
+                    response.sendRedirect("StudentServlet?action=list");
+                    break;
+                default: 
+                    List<StudentBean> listStudents = dao.selectAllStudents();
+                    request.setAttribute("listArray", listStudents);
+                    request.getRequestDispatcher("studentList.jsp").forward(request, response);
+                    break;
+            }
+        } catch (SQLException ex) {
+            throw new ServletException(ex);
+        }
+    }
+}
+
+
+//studentform 
+<%@ page import="com.lab.bean.StudentBean" %>
+<% 
+    StudentBean student = (StudentBean) request.getAttribute("studentData"); 
+    String actionUrl = (student == null) ? "StudentServlet?action=insert" : "StudentServlet?action=update";
+%>
+<html>
+<body>
+    <h2>Borang Pelajar</h2>
+    <form action="<%= actionUrl %>" method="post">
+        
+        <% if (student != null) { %>
+            <input type="hidden" name="id" value="<%= student.getId() %>">
+        <% } %>
+        
+        <label>No Matrik:</label>
+        <input type="text" name="matricNo" value="<%= (student != null) ? student.getMatricNo() : "" %>" required><br><br>
+        
+        <label>Nama Pelajar:</label>
+        <input type="text" name="name" value="<%= (student != null) ? student.getName() : "" %>" required><br><br>
+        
+        <input type="submit" value="Simpan Rekod">
+        <a href="StudentServlet?action=list">Batal</a>
+    </form>
+</body>
+</html>
+
+
+//studentlist.jsp
+<%@ page import="java.util.List" %>
+<%@ page import="com.lab.bean.StudentBean" %> 
+<html>
+<body>
+    <h2>Senarai Pelajar</h2>
+    
+    <a href="StudentServlet?action=new">Tambah Pelajar Baru</a>
+    <br><br>
+
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>No Matrik</th>
+            <th>Nama</th>
+            <th>Tindakan</th>
+        </tr>
+        <% 
+            List<StudentBean> list = (List<StudentBean>) request.getAttribute("listArray");
+            if (list != null && !list.isEmpty()) {
+                for (StudentBean st : list) { 
+        %>
+        <tr>
+            <td><%= st.getMatricNo() %></td>
+            <td><%= st.getName() %></td>
+            <td>
+                <a href="StudentServlet?action=edit&id=<%= st.getId() %>">Kemaskini</a> |
+                <a href="StudentServlet?action=delete&id=<%= st.getId() %>" onclick="return confirm('Pasti nak padam?')">Padam</a>
+            </td>
+        </tr>
+        <% 
+                } 
+            } else {
+        %>
+        <tr>
+            <td colspan="3">Tiada rekod pelajar.</td>
+        </tr>
+        <% } %>
+    </table>
+</body>
+</html>
+
+
