@@ -1,4 +1,25 @@
-// bean 
+-- 1. Cipta Database Baru (Sama nama macam dalam fail StudentDAO.java)
+CREATE DATABASE lab_test_db;
+
+-- 2. Gunakan database tersebut
+USE lab_test_db;
+
+-- 3. Cipta jadual 'students'
+CREATE TABLE students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    matric_no VARCHAR(20) NOT NULL,
+    name VARCHAR(100) NOT NULL
+);
+
+-- 4. (Pilihan) Masukkan dummy data supaya bila awak run NetBeans, table tak kosong
+INSERT INTO students (matric_no, name) VALUES ('S001', 'Ali bin Abu');
+INSERT INTO students (matric_no, name) VALUES ('S002', 'Siti Aminah binti Kassim');
+INSERT INTO students (matric_no, name) VALUES ('S003', 'Muthu a/l Subramaniam');// bean 
+
+
+
+//bean
+
 package com.lab.bean;
 
 import java.io.Serializable; 
